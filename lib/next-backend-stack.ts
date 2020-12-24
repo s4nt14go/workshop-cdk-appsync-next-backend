@@ -28,5 +28,27 @@ export class NextBackendStack extends cdk.Stack {
     const userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
       userPool
     })
+
+    const api = new appsync.GraphqlApi(this, 'cdk-blog-app', {
+      name: "cdk-blog-app",
+      logConfig: {
+        fieldLogLevel: appsync.FieldLogLevel.ALL,
+      },
+      schema: appsync.Schema.fromAsset('./graphql/schema.graphql'),
+      authorizationConfig: {
+        defaultAuthorization: {
+          authorizationType: appsync.AuthorizationType.API_KEY,
+          apiKeyConfig: {
+            expires: cdk.Expiration.after(cdk.Duration.days(365))
+          }
+        },
+        additionalAuthorizationModes: [{
+          authorizationType: appsync.AuthorizationType.USER_POOL,
+          userPoolConfig: {
+            userPool,
+          }
+        }]
+      },
+    })
   }
 }
