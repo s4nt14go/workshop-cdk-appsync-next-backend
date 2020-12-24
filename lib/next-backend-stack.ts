@@ -113,5 +113,25 @@ export class NextBackendStack extends cdk.Stack {
     // Create an environment variable that we will use in the function code
     postLambda.addEnvironment('POST_TABLE', postTable.tableName)
 
+    new cdk.CfnOutput(this, "GraphQLAPIURL", {
+      value: api.graphqlUrl
+    })
+
+    new cdk.CfnOutput(this, 'AppSyncAPIKey', {
+      value: api.apiKey || ''
+    })
+
+    new cdk.CfnOutput(this, 'ProjectRegion', {
+      value: this.region
+    })
+
+    new cdk.CfnOutput(this, "UserPoolId", {
+      value: userPool.userPoolId
+    })
+
+    new cdk.CfnOutput(this, "UserPoolClientId", {
+      value: userPoolClient.userPoolClientId
+    })
+
   }
 }
