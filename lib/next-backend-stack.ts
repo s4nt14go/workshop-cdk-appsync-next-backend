@@ -89,5 +89,29 @@ export class NextBackendStack extends cdk.Stack {
       fieldName: "updatePost"
     })
 
+    // Create the DynamoDB table
+    const postTable = new ddb.Table(this, 'CDKPostTable', {
+      billingMode: ddb.BillingMode.PAY_PER_REQUEST,
+      partitionKey: {
+        name: 'id',
+        type: ddb.AttributeType.STRING,
+      },
+    })
+
+    // Add a global secondary index to enable another data access pattern
+    postTable.addGlobalSecondaryIndex({
+      indexName: "postsByUsername",
+      partitionKey: {
+        name: "owner",
+        type: ddb.AttributeType.STRING,
+      }
+    })
+
+    // Enable the Lambda function to access the DynamoDB table (using IAM)
+    postTable.grantFullAccess(postLambda)
+
+    // Create an environment variable that we will use in the function code
+    postLambda.addEnvironment('POST_TABLE', postTable.tableName)
+
   }
 }
