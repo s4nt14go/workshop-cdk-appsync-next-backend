@@ -59,5 +59,35 @@ export class NextBackendStack extends cdk.Stack {
     })
     const lambdaDs = api.addLambdaDataSource('lambdaDatasource', postLambda)
 
+    lambdaDs.createResolver({
+      typeName: "Query",
+      fieldName: "getPostById"
+    })
+
+    lambdaDs.createResolver({
+      typeName: "Query",
+      fieldName: "listPosts"
+    })
+
+    lambdaDs.createResolver({
+      typeName: "Query",
+      fieldName: "postsByUsername"
+    })
+
+    lambdaDs.createResolver({
+      typeName: "Mutation",
+      fieldName: "createPost"
+    })
+
+    lambdaDs.createResolver({
+      typeName: "Mutation",
+      fieldName: "deletePost"
+    })
+
+    lambdaDs.createResolver({
+      typeName: "Mutation",
+      fieldName: "updatePost"
+    })
+
   }
 }
