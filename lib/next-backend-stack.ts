@@ -50,5 +50,14 @@ export class NextBackendStack extends cdk.Stack {
         }]
       },
     })
+
+    const postLambda = new lambda.Function(this, 'AppSyncPostHandler', {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'main.handler',
+      code: lambda.Code.fromAsset('lambda-fns'),
+      memorySize: 1024
+    })
+    const lambdaDs = api.addLambdaDataSource('lambdaDatasource', postLambda)
+
   }
 }
