@@ -10,7 +10,7 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "deploy": "tsc && cdk deploy '*' --require-approval 'never'",
+    "deploy": "tsc && cdk deploy '*' --require-approval 'never' -O ./cdk-exports.json",
     "diff": "tsc && cdk diff"
   },
   "devDependencies": {
